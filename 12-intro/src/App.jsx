@@ -4,7 +4,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import './App.css'
 import { Component } from 'react'
-import Welcome from '/src/components/WelcomeMessage.jsx';
+import Welcome from '/src/components/Test.jsx';
 
 function App() {
   const [count, setCount] = useState(0)
