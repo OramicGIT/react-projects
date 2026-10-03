@@ -1,16 +1,22 @@
+import Button from './components/TernButton.jsx'
 import Counter from './components/Counter.jsx'
-import Button from './components/MainApp.jsx'
-import Traffic from './components/TrafficLight.jsx'
+import SS from './components/ColorButton.jsx'
+import List from './components/DeletableList.jsx'
 
 function App() {
+
   return (
     <>
-      <p>counter</p>
-      <Counter></Counter>
-      <p>color changer</p>
       <Button></Button>
-      <p>traffic lights</p>
-      <Traffic></Traffic>
+      <br></br>
+      <br></br>
+      <h2>Shapeshifter Button</h2>
+      <SS></SS>
+      <br></br>
+      <br></br>
+      <h2>Counter Button</h2>
+      <Counter></Counter>
+      <List></List>
     </>
   )
 }

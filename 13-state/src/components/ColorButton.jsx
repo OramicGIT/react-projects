@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function Button() {
+function SS() {
   const [color, setColor] = useState("#FFFFFF");
 
   const handleClick = () => {
@@ -16,4 +16,4 @@ function Button() {
   );
 }
 
-export default Button;
+export default SS;
