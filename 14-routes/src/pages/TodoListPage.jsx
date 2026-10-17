@@ -13,6 +13,7 @@ const initialTodos = [
 function Todo() {
     const [todos, setTodos] = useState(initialTodos);
     const [newTodo, setText] = useState('');
+    const [highPriority, setPriority] = useState(false);
 
     const handleAddTodo = () => {
         if (newTodo.trim() == ""){
@@ -37,6 +38,7 @@ function Todo() {
 
                 <div className="add-todo-form">
                     <input type="text" value={newTodo} onChange={(e) => setText(e.target.value)} placeholder="e. g: Cook a pizza"/>
+                    <input type="radio" value={highPriority} onChange={(e) => setPriority(e.target.value)}></input>
                     <button onClick={handleAddTodo}>Add a task</button>
                 </div>
 
