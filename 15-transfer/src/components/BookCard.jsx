@@ -10,8 +10,8 @@ export default function BookCard({
             <img className='cover' src={image} 
             alt={`Cover for ${title}`} loading="lazy" 
             decoding="async"></img>
-            <div className='button'>
-                <button onClick={onAdd} disabled={isAdded}>
+            <div className='row'>
+                <button onClick={onAdd} className="button" disabled={isAdded}>
                     {isAdded ? `In Favorites`: `Favorite`}
                 </button>
             </div>

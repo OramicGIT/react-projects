@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react'
 import './App.css'
 import BookCard from './components/BookCard.jsx';
+import HeroCard from './components/HeroCard.jsx';
 
 function App() {
   const [heroes] = useState([
@@ -18,17 +19,29 @@ function App() {
   const [favorites, setFavorites] = useState([]);
   const [filter, setFilter] = useState('all');
   const [query, setQuery] = useState('');
+
   const favoriteBookIds = useMemo(
     () => new Set(favorites.filter(f => f.type === "Book").map(f => f.id)),
     [favorites]
   )
 
+  const favoriteHeroIds = useMemo(
+    () => new Set(favorites.filter(f => f.type === "Hero").map(f => f.id)),
+    [favorites]
+  )
+
   function sayHello(name) {
-    alert(`Привіт! Я ${name}!`)
+    alert(`Hello! My name is ${name}!`)
   }
 
   function addHeroToFavorites(hero) {
-
+    setFavorites(prev => {
+      const exists = prev.some(it => it.hero === "Hero" && it.id === hero.id)
+      return exists ? prev : [
+        ...prev,
+        { type: 'Hero', id: hero.id, label:`${hero.name}`}
+      ]
+    })
   }
 
   function addBookToFavorites(book) {
@@ -36,7 +49,7 @@ function App() {
       const exists = prev.some(it => it.book === "Book" && it.id === book.id)
       return exists ? prev : [
         ...prev,
-        { type: 'Book', id: book.id, label:`${book.title} - ${book.author}`}
+        { type: 'Book', id: book.id, label:`${book.title} by ${book.author}`}
       ]
     })
   }
@@ -56,6 +69,30 @@ function App() {
                 onAdd={() => addBookToFavorites(b)}
                 isAdded={favoriteBookIds.has(b.id)}
               />
+            ))}
+          </div>
+        </section>
+        <section>
+          <h2> 
+            Heroes            
+          </h2>
+          <div className='grid'>
+            {heroes.map(h => (
+              <HeroCard 
+                key={h.id}
+                name={h.name}
+                power={h.power}
+                level={h.level}
+                image={h.image}
+                skills={h.skills}
+                info={h.info}
+
+                onHello={()=> sayHello(h.name)}
+                onAdd={()=> addHeroToFavorites(h)}
+                isAdded={favoriteHeroIds.has(h.id)}
+              >
+                <span className='tag'>Comics</span>
+              </HeroCard>
             ))}
           </div>
         </section>
