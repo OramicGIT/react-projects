@@ -12,6 +12,8 @@ export default function HeroCard({name, power, level, image, skills = [], info =
             alt={`Image for ${name}`} loading="lazy" 
             decoding="async"></img>
 
+            <p></p>
+
             {skills.length ? <div className='row'>
                 {skills.map((s, i) => <span key={i} className="tag">{s}</span>)}
             </div> : null}

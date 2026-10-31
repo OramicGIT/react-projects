@@ -2,12 +2,15 @@ import { useState, useMemo } from 'react'
 import './App.css'
 import BookCard from './components/BookCard.jsx';
 import HeroCard from './components/HeroCard.jsx';
+import Filter from './components/FilterBar.jsx';
+import Favorites from './components/FavoritesList.jsx';
+
 
 function App() {
   const [heroes] = useState([
-    { id: 1, name: 'Batman', power: 'Detective', image: 'https://picsum.photos/seed/bat/600/400', level: 90, skills: ['detective', 'martial arts'], info: { city: 'Gotham' } },
-    { id: 2, name: 'Superman', power: 'Strength', image: 'https://picsum.photos/seed/sup/600/400', level: 98, skills: ['flying', 'laser eyes'], info: { city: 'Metropolis' } },
-    { id: 3, name: 'Wonder Woman', power: 'Agility', image: 'https://picsum.photos/seed/ww/600/400', level: 92, skills: ['agility', 'lasso'], info: { city: 'Themyscira' } }
+    { id: 1, name: 'Batman', power: 'Detective', image: 'https://picsum.photos/seed/bat/600/400', level: 90, skills: ['Detective', 'Martial arts'], info: { city: 'Gotham' } },
+    { id: 2, name: 'Superman', power: 'Strength', image: 'https://picsum.photos/seed/sup/600/400', level: 98, skills: ['Flying', 'Laser eyes'], info: { city: 'Metropolis' } },
+    { id: 3, name: 'Wonder Woman', power: 'Agility', image: 'https://picsum.photos/seed/ww/600/400', level: 92, skills: ['Agility', 'Lasso'], info: { city: 'Themyscira' } }
   ]);
 
   const [books] = useState([
@@ -39,9 +42,10 @@ function App() {
       const exists = prev.some(it => it.hero === "Hero" && it.id === hero.id)
       return exists ? prev : [
         ...prev,
-        { type: 'Hero', id: hero.id, label:`${hero.name}`}
+        { type: 'Hero', id: hero.id, label: `${hero.name}` }
       ]
-    })
+    });
+    console.log(favorites, total, heroCount);
   }
 
   function addBookToFavorites(book) {
@@ -49,14 +53,51 @@ function App() {
       const exists = prev.some(it => it.book === "Book" && it.id === book.id)
       return exists ? prev : [
         ...prev,
-        { type: 'Book', id: book.id, label:`${book.title} by ${book.author}`}
+        { type: 'Book', id: book.id, label: `${book.title} by ${book.author}` }
       ]
     })
   }
 
+  const total = favorites.length;
+  const heroCount = favorites.filter(i => i.type === "Hero").length;
+  const bookCount = favorites.filter(i => i.type === "Book").length;
+
+  const filteredFavorites = useMemo(() => {
+    let items = favorites;
+    if (filter == 'hero') items = items.filter(i => i.type==='Hero');
+    if (filter == 'book') items = items.filter(i => i.type==='Book');
+    
+    return items
+  }, [favorites, filter, query]);
+
+  function removeFromFavorites(item){
+    setFavorites(prev => prev.filter(
+      it => !(it.type===item.type && it.id===item.id)
+    ));
+  }
+
+
   return (
     <>
       <div>
+        <section>
+          <h2>Favorites</h2>
+          <Filter
+            filter={filter}
+            setFilter={setFilter}
+            heroCount={heroCount}
+            bookCount={bookCount}
+            total={total}
+            query={query}
+            setQuery={setQuery}
+          />
+          <Favorites
+            items={filteredFavorites}
+            onRemove={removeFromFavorites}
+            hasFavorites={favorites.length > 0}
+            ariaLabel='Favorites List'
+          />
+        </section>
         <section>
           <h2>Books</h2>
           <div className='grid'>
@@ -73,12 +114,12 @@ function App() {
           </div>
         </section>
         <section>
-          <h2> 
-            Heroes            
+          <h2>
+            Heroes
           </h2>
           <div className='grid'>
             {heroes.map(h => (
-              <HeroCard 
+              <HeroCard
                 key={h.id}
                 name={h.name}
                 power={h.power}
@@ -87,11 +128,11 @@ function App() {
                 skills={h.skills}
                 info={h.info}
 
-                onHello={()=> sayHello(h.name)}
-                onAdd={()=> addHeroToFavorites(h)}
+                onHello={() => sayHello(h.name)}
+                onAdd={() => addHeroToFavorites(h)}
                 isAdded={favoriteHeroIds.has(h.id)}
               >
-                <span className='tag'>Comics</span>
+                <span className='tag'>A book hero</span>
               </HeroCard>
             ))}
           </div>
